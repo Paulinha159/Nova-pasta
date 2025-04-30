@@ -14,7 +14,6 @@ class Pedido:
     def calcular_total(self):
         return sum(item.preco for item in self.itens)
 
-# Exemplo de uso:
 pedido = Pedido("Carlos")
 pedido.adicionar_item(Item("Hamburguer", 25))
 pedido.adicionar_item(Item("Refrigerante", 5))

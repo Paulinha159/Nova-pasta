@@ -14,6 +14,6 @@ class Moto(Veiculo):
         return "Esta é uma moto"
 
 # Exemplo de uso:
-veiculos = [Carro("Ford"), Moto("Yamaha")]
+veiculos = [Carro("ford"), Moto("Yamaha")]
 for v in veiculos:
     print(f"{v.marca}: {v.exibir_tipo()}")

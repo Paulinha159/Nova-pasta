@@ -14,8 +14,10 @@ class Biblioteca:
         for livro in self.livros:
             print(f"{livro.titulo}, por {livro.autor}")
 
-# Exemplo de uso:
+titulo = input("Digite o título do livro: ")
+autor = input("Digite o autor do livro: ")
 biblio = Biblioteca()
-biblio.adicionar_livro(Livro("1984", "George Orwell"))
+biblio.adicionar_livro(Livro(titulo, autor))
+biblio.adicionar_livro(Livro("O Alquimista", "Paulo Coelho"))
 biblio.adicionar_livro(Livro("Dom Casmurro", "Machado de Assis"))
 biblio.listar_livros()

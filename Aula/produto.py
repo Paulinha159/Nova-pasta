@@ -13,8 +13,9 @@ class Produto:
         desconto = self.__preco * (percentual / 100)
         return self.__preco - desconto
 
-# Exemplo de uso:
-produto = Produto("Camisa", 100.0)
-print("Produto:", produto.get_nome())
-print("Preço original: R$", produto.get_preco())
-print("Preço com 10% de desconto: R$", produto.aplicar_desconto(10))
+nome = input("Digite o nome do produto: ")
+valor= float(input("Digite o preço do produto: "))
+produtos = Produto(nome= nome, preco= valor)
+print("Produto:", produtos.get_nome())
+print("Preço original: R$", produtos.get_preco())
+print("Preço com 10% de desconto: R$", produtos.aplicar_desconto(10))

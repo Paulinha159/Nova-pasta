@@ -6,6 +6,7 @@ class Pessoa:
     def apresentar(self):
         return f"Olá! Meu nome é {self.nome} e tenho {self.idade} anos."
 
-# Exemplo de uso:
-pessoa = Pessoa("Ana", 22)
+nome= input("Digite seu nome: ")
+idade= int(input("Digite sua idade: "))
+pessoa = Pessoa(nome=nome, idade=idade)
 print(pessoa.apresentar())
