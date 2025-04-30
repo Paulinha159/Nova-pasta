@@ -10,40 +10,74 @@ class Usuario:
 class GerenciadorUsuarios:
     def __init__(self):
         self.usuarios = []
+        self.proximo_id = 1
 
-    def adicionar_usuario(self, usuario):
+    def adicionar_usuario(self, nome, email):
+        usuario = Usuario(self.proximo_id, nome, email)
         self.usuarios.append(usuario)
-
+        print(f"Usuário adicionado com sucesso! ID: {self.proximo_id}")
+        self.proximo_id += 1  
     def listar_usuarios(self):
-        for usuario in self.usuarios:
-            print(usuario.exibir_info())
+        if not self.usuarios:
+            print("Nenhum usuário cadastrado.")
+        else:
+            for usuario in self.usuarios:
+                print(usuario.exibir_info())
 
     def atualizar_usuario(self, user_id, novo_nome, novo_email):
         for usuario in self.usuarios:
             if usuario.id == user_id:
                 usuario.nome = novo_nome
                 usuario.email = novo_email
+                print("Usuário atualizado com sucesso!")
                 return True
+        print("Usuário não encontrado.")
         return False
 
     def remover_usuario(self, user_id):
-        self.usuarios = [u for u in self.usuarios if u.id != user_id]
+        for usuario in self.usuarios:
+            if usuario.id == user_id:
+                self.usuarios.remove(usuario)
+                print("Usuário removido com sucesso!")
+                return True
+        print("Usuário não encontrado.")
+        return False
 
-# Menu de teste:
+# Menu interativo
 gerenciador = GerenciadorUsuarios()
 
-gerenciador.adicionar_usuario(Usuario(1, "Alice", "alice@email.com"))
-gerenciador.adicionar_usuario(Usuario(2, "Bob", "bob@email.com"))
+while True:
+    print("\n--- MENU ---")
+    print("1. Adicionar usuário")
+    print("2. Listar usuários")
+    print("3. Atualizar usuário")
+    print("4. Remover usuário")
+    print("5. Sair")
 
-print("Usuários cadastrados:")
-gerenciador.listar_usuarios()
+    opcao = input("Escolha uma opção: ")
 
-gerenciador.atualizar_usuario(1, "Alicia", "alicia@email.com")
+    if opcao == "1":
+        nome = input("Nome: ")
+        email = input("Email: ")
+        gerenciador.adicionar_usuario(nome, email)
 
-print("\nApós atualização:")
-gerenciador.listar_usuarios()
+    elif opcao == "2":
+        gerenciador.listar_usuarios()
 
-gerenciador.remover_usuario(2)
+    elif opcao == "3":
+        user_id = int(input("ID do usuário a atualizar: "))
+        novo_nome = input("Novo nome: ")
+        novo_email = input("Novo email: ")
+        if not gerenciador.atualizar_usuario(user_id, novo_nome, novo_email):
+            print("Usuário não encontrado.")
 
-print("\nApós remoção:")
-gerenciador.listar_usuarios()
+    elif opcao == "4":
+        user_id = int(input("ID do usuário a remover: "))
+        gerenciador.remover_usuario(user_id)
+
+    elif opcao == "5":
+        print("Encerrando o sistema...")
+        break
+
+    else:
+        print("Opção inválida. Tente novamente.")
