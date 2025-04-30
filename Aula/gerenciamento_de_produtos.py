@@ -1,27 +1,23 @@
 def cadastrar_produto(estoque):
-    nome = " ".join(input("Digite o nome do produto: ").strip().lower().split())  # Normaliza o nome
+    nome = input("Digite o nome do produto: ").strip().lower()  # Armazena o nome em minúsculas
     if nome in estoque:
-        print(f"Produto '{nome.title()}' já está cadastrado. Retornando ao menu principal.")
+        print(f"Produto '{nome.title()}' já está cadastrado.")
         return
 
-    try:
-        preco = float(input("Digite o preço do produto: "))
-    except ValueError:
-        print("Erro: O preço deve ser um número decimal.")
+    preco = input("Digite o preço do produto: ").strip()
+    if not preco.replace('.', '', 1).isdigit():
+        print("Erro: O preço deve ser um número.")
         return
+    preco = float(preco)
 
-    try:
-        quantidade = int(input("Digite a quantidade do produto: "))
-    except ValueError:
+    quantidade = input("Digite a quantidade do produto: ").strip()
+    if not quantidade.isdigit():
         print("Erro: A quantidade deve ser um número inteiro.")
         return
+    quantidade = int(quantidade)
 
-    estoque[nome] = {
-        "nome": nome.title(),
-        "preço": f"R$ {preco:.2f}",
-        "quantidade": quantidade
-    }
-    print(f"Produto {nome.title()} cadastrado com sucesso!")
+    estoque[nome] = {"nome": nome.title(), "preço": preco, "quantidade": quantidade}
+    print(f"Produto '{nome.title()}' cadastrado com sucesso!")
 
 
 def listar_produtos(estoque):
@@ -29,56 +25,53 @@ def listar_produtos(estoque):
         print("Nenhum produto cadastrado.")
     else:
         print("\nLista de produtos:")
-        for nome, dados in estoque.items():
-            print(f"\nInformações do produto {dados['nome']}:")
-            for chave, valor in dados.items():
-                print(f"{chave.capitalize()}: {valor}")
+        for produto in estoque.values():
+            print(f"Nome: {produto['nome']}")
+            print(f"Preço: R$ {produto['preço']:.2f}")
+            print(f"Quantidade: {produto['quantidade']}")
+            print("-" * 20)
 
 
 def atualizar_produto(estoque):
-    nome = " ".join(input("Digite o nome do produto que deseja atualizar: ").strip().lower().split())  # Normaliza o nome
+    nome = input("Digite o nome do produto que deseja atualizar: ").strip().lower()  # Busca o nome em minúsculas
     if nome not in estoque:
         print("Produto não encontrado.")
         return
 
-    print("\nAtualize as informações do produto. Deixe em branco para manter o valor atual.")
+    print("Deixe em branco para manter o valor atual.")
 
-    # Atualizar o nome
-    novo_nome = " ".join(input(f"Novo nome ({estoque[nome]['nome']}): ").strip().lower().split())
-    if novo_nome and novo_nome != nome and novo_nome in estoque:
-        print(f"Erro: Já existe um produto com o nome '{novo_nome.title()}'.")
-        return
-    elif novo_nome:
+    novo_nome = input(f"Novo nome ({estoque[nome]['nome']}): ").strip()
+    if novo_nome:
+        novo_nome = novo_nome.lower()
+        if novo_nome != nome and novo_nome in estoque:
+            print(f"Erro: Já existe um produto com o nome '{novo_nome.title()}'.")
+            return
         estoque[novo_nome] = estoque.pop(nome)
         estoque[novo_nome]["nome"] = novo_nome.title()
-        nome = novo_nome  # Atualiza a referência do nome no dicionário
+        nome = novo_nome
 
-    # Atualizar o preço
-    try:
-        novo_preco = input(f"Novo preço ({estoque[nome]['preço']}): ").strip()
-        if novo_preco:
-            estoque[nome]["preço"] = f"R$ {float(novo_preco):.2f}"
-    except ValueError:
-        print("Erro: O preço deve ser um número decimal.")
-        return
+    novo_preco = input(f"Novo preço ({estoque[nome]['preço']}): ").strip()
+    if novo_preco:
+        if not novo_preco.replace('.', '', 1).isdigit():
+            print("Erro: O preço deve ser um número.")
+            return
+        estoque[nome]["preço"] = float(novo_preco)
 
-    # Atualizar a quantidade
-    try:
-        nova_quantidade = input(f"Nova quantidade ({estoque[nome]['quantidade']}): ").strip()
-        if nova_quantidade:
-            estoque[nome]["quantidade"] = int(nova_quantidade)
-    except ValueError:
-        print("Erro: A quantidade deve ser um número inteiro.")
-        return
+    nova_quantidade = input(f"Nova quantidade ({estoque[nome]['quantidade']}): ").strip()
+    if nova_quantidade:
+        if not nova_quantidade.isdigit():
+            print("Erro: A quantidade deve ser um número inteiro.")
+            return
+        estoque[nome]["quantidade"] = int(nova_quantidade)
 
     print(f"Produto '{estoque[nome]['nome']}' atualizado com sucesso!")
 
 
 def remover_produto(estoque):
-    nome = " ".join(input("Digite o nome do produto que deseja remover: ").strip().lower().split())  # Normaliza o nome
+    nome = input("Digite o nome do produto que deseja remover: ").strip().lower()  # Busca o nome em minúsculas
     if nome in estoque:
         del estoque[nome]
-        print(f"Produto {nome.title()} removido com sucesso!")
+        print(f"Produto '{nome.title()}' removido com sucesso!")
     else:
         print("Produto não encontrado.")
 
@@ -86,7 +79,7 @@ def remover_produto(estoque):
 estoque = {}
 
 while True:
-    print("\n MENU ")
+    print("\nMENU")
     print("1 - Cadastrar produto")
     print("2 - Listar produtos")
     print("3 - Atualizar produto")
